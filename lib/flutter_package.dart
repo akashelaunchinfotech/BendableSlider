@@ -8,6 +8,7 @@ class BendableSlider extends StatefulWidget {
   final bool isTitleFixed;
   final Color backgroundTrackColor;
   final List<Color>? foregroundGradiantColor;
+  final double initialProgress;
 
   const BendableSlider({
     super.key,
@@ -17,6 +18,7 @@ class BendableSlider extends StatefulWidget {
     this.isTitleFixed = true,
     required this.backgroundTrackColor,
     this.foregroundGradiantColor,
+    this.initialProgress = 0.3,
   });
 
   @override
@@ -26,6 +28,12 @@ class BendableSlider extends StatefulWidget {
 class _BendableSliderState extends State<BendableSlider> {
   double _progress = 0.3;
   bool _isCompleted = false;
+
+  @override
+  void initState() {
+    _progress = widget.initialProgress;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
