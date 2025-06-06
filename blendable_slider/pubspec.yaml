@@ -1,5 +1,5 @@
 name: bendable_slider
-description: "A customizable blendable slider for your Flutter app."
+description: "A bendable curved slider with gradient progress and custom thumb."
 version: 0.0.1
 homepage: https://github.com/akashelaunchinfotech/BendableSlider/tree/master/blendable_slider
 
@@ -17,3 +17,4 @@ dev_dependencies:
   flutter_lints: ^6.0.0
 
 flutter:
+  uses-material-design: true
