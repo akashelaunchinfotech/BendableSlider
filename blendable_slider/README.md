@@ -23,6 +23,11 @@ Add this to your `pubspec.yaml`:
 
 Here's a minimal example of how to use the `BendableSlider` widget:
 
+```yaml
+dependencies:
+  bendable_slider: ^0.0.1
+  ```
+
 ```dart
 BendableSlider(
             backgroundTrackColor: Colors.grey.shade300,
@@ -43,8 +48,6 @@ BendableSlider(
           ),
 
 
-```yaml
-dependencies:
-  bendable_slider: ^0.0.1
+
 
 
