@@ -10,7 +10,6 @@ Great for onboarding screens, confirmation sliders, or fun UI interactions.
 - 🎯 Bendable curved slider
 - 🌈 Customizable gradient foreground and solid background
 - 📝 Optional title (fixed or dynamic)
-- 🎉 Callback when sliding completes (over 98%)
 - 🧩 Easy to integrate and style
 
 ---
