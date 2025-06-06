@@ -1,6 +1,6 @@
 name: bendable_slider
 description: "A bendable curved slider with gradient progress and custom thumb."
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/akashelaunchinfotech/BendableSlider/tree/master/blendable_slider
 
 environment:
