@@ -12,11 +12,10 @@ packages:
   bendable_slider:
     dependency: "direct main"
     description:
-      name: bendable_slider
-      sha256: b107dec14fae5e5819fb0120390496101983f48e5951056f3d95845baafce28a
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.2"
+      path: ".."
+      relative: true
+    source: path
+    version: "0.0.3"
   boolean_selector:
     dependency: transitive
     description:

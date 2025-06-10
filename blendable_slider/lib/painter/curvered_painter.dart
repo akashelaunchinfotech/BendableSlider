@@ -9,8 +9,17 @@ class BendableSliderPainter extends CustomPainter {
   final TextStyle? titleTextStyle;
   final List<Color>? foregroundGradiantColor;
   final Color? backgroundTrackColor;
+  final double hideThumbProgress;
 
-  BendableSliderPainter({required this.progress, this.title, this.isTitleFixed = true, this.titleTextStyle, this.foregroundGradiantColor,this.backgroundTrackColor});
+  BendableSliderPainter({
+    required this.progress,
+    this.title,
+    this.isTitleFixed = true,
+    this.titleTextStyle,
+    this.foregroundGradiantColor,
+    this.backgroundTrackColor,
+    this.hideThumbProgress = 0.4,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -22,7 +31,7 @@ class BendableSliderPainter extends CustomPainter {
 
     // 1. Draw the base path (black with 20% opacity)
     final basePaint = Paint()
-      ..color = backgroundTrackColor??Colors.black.withValues(alpha: 0.2)
+      ..color = backgroundTrackColor ?? Colors.black.withValues(alpha: 0.2)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 50
       ..strokeCap = StrokeCap.round;
@@ -52,7 +61,7 @@ class BendableSliderPainter extends CustomPainter {
     canvas.drawPath(progressPath, gradientPaint);
 
     // 1. Draw thumb circle
-    final thumbPaint = Paint()..color = const Color(0x33000000);
+    final thumbPaint = Paint()..color = progress < hideThumbProgress ? const Color(0x33000000) : Colors.transparent;
     final thumbX = progress * size.width;
     final thumbY = _quadraticBezierY(progress, size.width, centerHeight);
     final thumbPos = Offset(thumbX, thumbY);
@@ -67,7 +76,7 @@ class BendableSliderPainter extends CustomPainter {
     canvas.translate(thumbPos.dx, thumbPos.dy);
     canvas.rotate(angle);
 
-    debugPrint("angle ::$angle");
+    debugPrint("progress ::$progress");
 
     if (!isTitleFixed && title != null) {
       // 4. Draw background text behind arrow
@@ -81,12 +90,18 @@ class BendableSliderPainter extends CustomPainter {
       textPainter.paint(canvas, textOffset);
     }
 
+    debugPrint("progress ::$progress");
     // 5. Draw arrow icon on top of text
     const icon = Icons.arrow_forward;
     final arrowPainter = TextPainter(textDirection: TextDirection.ltr);
     arrowPainter.text = TextSpan(
       text: String.fromCharCode(icon.codePoint),
-      style: TextStyle(fontSize: 20, fontFamily: icon.fontFamily, package: icon.fontPackage, color: Colors.white),
+      style: TextStyle(
+        fontSize: 20,
+        fontFamily: icon.fontFamily,
+        package: icon.fontPackage,
+        color: progress < hideThumbProgress ? Colors.white : Colors.transparent,
+      ),
     );
     arrowPainter.layout();
     final arrowOffset = Offset(-arrowPainter.width / 2, -arrowPainter.height / 2);
