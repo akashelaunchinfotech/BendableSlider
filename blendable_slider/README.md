@@ -5,7 +5,9 @@ Great for onboarding screens, confirmation sliders, or fun UI interactions.
 
 ---
 
-![Demo](./bendable_slider.gif)
+## 🎥 Demo
+
+![BendableSlider Demo](https://github.com/akashelaunchinfotech/BendableSlider/blob/master/blendable_slider/bendable_slider.gif)
 
 ## ✨ Features
 
