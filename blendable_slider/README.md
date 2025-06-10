@@ -46,7 +46,9 @@ BendableSlider(
             },
           ),
 
+## 🎥 Demo
 
+![BendableSlider Demo](https://raw.githubusercontent.com/akashelaunchinfotech/BendableSlider/master/blendable_slider/main/assets/bendable_slider.gif)
 
 
 
