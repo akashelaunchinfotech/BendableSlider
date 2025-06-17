@@ -34,7 +34,7 @@ class BendableSliderPainter extends CustomPainter {
       ..color = backgroundTrackColor ?? Colors.black.withValues(alpha: 0.2)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 50
-      ..strokeCap = StrokeCap.round;
+      ..strokeCap = StrokeCap.square;
     canvas.drawPath(basePath, basePaint);
 
     // 2. Clip path to draw gradient only up to progress
@@ -57,7 +57,7 @@ class BendableSliderPainter extends CustomPainter {
       ).createShader(Rect.fromLTWH(0, 0, size.width, size.height))
       ..style = PaintingStyle.stroke
       ..strokeWidth = 56
-      ..strokeCap = StrokeCap.round;
+      ..strokeCap = progress >= 0.98 ? StrokeCap.square : StrokeCap.round;
     canvas.drawPath(progressPath, gradientPaint);
 
     // 1. Draw thumb circle
@@ -68,7 +68,8 @@ class BendableSliderPainter extends CustomPainter {
     canvas.drawCircle(thumbPos, 20, thumbPaint);
 
     // 2. Calculate tangent direction
-    final tangent = _calculateBezierTangent(progress, size.width, centerHeight);
+    /// isCenter use for center send text only
+    final tangent = _calculateBezierTangent(progress, size.width, centerHeight, isCenter: progress < hideThumbProgress);
     final angle = atan2(tangent.dy, tangent.dx);
 
     // 3. Save canvas to rotate content
@@ -76,17 +77,22 @@ class BendableSliderPainter extends CustomPainter {
     canvas.translate(thumbPos.dx, thumbPos.dy);
     canvas.rotate(angle);
 
-    debugPrint("progress ::$progress");
-
+    // SEND Text Fade Logic
     if (!isTitleFixed && title != null) {
+      // final double calculatedOpacity = (1 - (progress * 2)).clamp(0.0, 1.0);
+      final double calculatedOpacity = progress < 0.5 ? 1.0 : 0.0;
+
       // 4. Draw background text behind arrow
       final textPainter = TextPainter(textDirection: TextDirection.ltr);
       textPainter.text = TextSpan(
-        text: title, // <-- Your custom text here
-        style: titleTextStyle ?? TextStyle(fontSize: 12, fontWeight: FontWeight.w600, letterSpacing: 1.6),
+        text: title,
+        style: (titleTextStyle ?? const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.white, letterSpacing: 1.6)).copyWith(
+          color: (titleTextStyle?.color ?? Colors.white).withValues(alpha: calculatedOpacity),
+        ), // 👈 fade out at 50%
+        // style: titleTextStyle ?? TextStyle(fontSize: 12, fontWeight: FontWeight.w600, letterSpacing: 1.6),
       );
       textPainter.layout();
-      final textOffset = Offset(-(textPainter.width / 2) - 46, -(textPainter.height / 2));
+      final textOffset = Offset(-(textPainter.width / 2) - (progress < hideThumbProgress ? 50 : 4), -(textPainter.height / 2));
       textPainter.paint(canvas, textOffset);
     }
 
@@ -104,7 +110,7 @@ class BendableSliderPainter extends CustomPainter {
       ),
     );
     arrowPainter.layout();
-    final arrowOffset = Offset(-arrowPainter.width / 2, -arrowPainter.height / 2);
+    final arrowOffset = Offset((-arrowPainter.width / 2), -arrowPainter.height / 2);
     arrowPainter.paint(canvas, arrowOffset);
 
     // 6. Restore canvas
@@ -120,9 +126,9 @@ class BendableSliderPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
 
-Offset _calculateBezierTangent(double t, double width, double height) {
+Offset _calculateBezierTangent(double t, double width, double height, {bool isCenter = false}) {
   // Derivative of a quadratic Bézier curve
-  final dx = 2 * (1 - t) * (width / 2 - 0) + 2 * t * (width - width / 2);
+  final dx = 2 * (1 - t) * (width / 2 - 0) + (isCenter ? -2 : 2) * t * (width - width / 2);
   final dy = 2 * (1 - t) * (0 - height) + 2 * t * (height - 0);
   return Offset(dx, dy);
 }
