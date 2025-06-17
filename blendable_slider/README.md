@@ -28,7 +28,7 @@ Here's a minimal example of how to use the `BendableSlider` widget:
 
 ```yaml
 dependencies:
-  bendable_slider: ^0.0.1
+  bendable_slider: ^0.0.7
   ```
 
 ```dart
